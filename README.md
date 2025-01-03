@@ -56,7 +56,7 @@ This project is a **Password Strength Checker** built in Python. It evaluates th
    ```
 2. Run the script:
    ```bash
-   python password_checker.py
+   python PasswordStrengthChecker.py
    ```
 
 ---
@@ -65,7 +65,7 @@ This project is a **Password Strength Checker** built in Python. It evaluates th
 
 1. Run the script:
    ```bash
-   python password_checker.py
+   python PasswordStrenghtChecker.py
    ```
 2. Enter a password when prompted.
 3. Review the strength rating and feedback to improve your password.
