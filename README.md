@@ -92,8 +92,7 @@ Suggestions to improve your password:
 
 ## Potential Improvements
 
-- Add a dictionary-based check to warn users against common or compromised passwords.
-- Implement a real-time strength checker in a GUI using frameworks like **Tkinter** or **PyQt**.
+- Add a dictionary-based check to warn users against common or compromised passwords
 - Extend to a web-based tool using **Flask** or **Django**.
 - Add localization support for non-English-speaking users.
 
