@@ -52,7 +52,7 @@ This project is a **Password Strength Checker** built in Python. It evaluates th
 1. Clone the repository:
    ```bash
    git clone https://github.com/yourusername/password-strength-checker.git
-   cd password-strength-checker
+   cd PasswordStrengthChecker
    ```
 2. Run the script:
    ```bash
