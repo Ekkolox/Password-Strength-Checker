@@ -1,7 +1,7 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLineEdit, QPushButton, QLabel
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QPixmap
+from PyQt6.QtGui import QPixmap #This module is unused in the program but maybe I will use it in later version, originally wanted to include a logo to pop up alongside  and some images to congradulate the user, encourage them to make a better password or some other meme-able stuff
 import string
 import random
 
