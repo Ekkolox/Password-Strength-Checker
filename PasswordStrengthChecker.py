@@ -1,9 +1,11 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLineEdit, QPushButton, QLabel
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QPixmap #This module is unused in the program but maybe I will use it in later version, originally wanted to include a logo to pop up alongside  and some images to congradulate the user, encourage them to make a better password or some other meme-able stuff
 import string
 import random
+from PyQt6.QtWidgets import (
+    QApplication, QWidget, QVBoxLayout, QLineEdit, QPushButton, QLabel, QCheckBox
+)
+from PyQt6.QtCore import Qt
+
 
 # Function to check password strength
 def check_password_strength(password, min_length=8, special_chars=string.punctuation):
@@ -36,7 +38,8 @@ def check_password_strength(password, min_length=8, special_chars=string.punctua
 
     return strength, missing_criteria
 
-# A function to generate a password using random ASCII characters if the user feels lost
+
+# A function to generate a password using random ASCII characters
 def generate_password(min_length=8, special_chars=string.punctuation):
     password = []
     password.append(random.choice(string.ascii_letters))
@@ -56,6 +59,7 @@ def generate_password(min_length=8, special_chars=string.punctuation):
 
     return ''.join(password)
 
+
 # Main window class for GUI
 class PasswordStrengthChecker(QWidget):
     def __init__(self):
@@ -74,44 +78,72 @@ class PasswordStrengthChecker(QWidget):
         # Password input field
         self.password_input = QLineEdit()
         self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
+        self.password_input.textChanged.connect(self.update_password_strength)
         layout.addWidget(self.password_input)
 
-        # Button to check password strength
-        self.check_button = QPushButton("Check Password Strength")
-        self.check_button.clicked.connect(self.check_password)
-        layout.addWidget(self.check_button)
+        # Checkbox to toggle password visibility
+        self.show_password_checkbox = QCheckBox("Show Password")
+        self.show_password_checkbox.stateChanged.connect(self.toggle_password_visibility)
+        layout.addWidget(self.show_password_checkbox)
 
         # Label for displaying password strength
-        self.strength_label = QLabel("")
+        self.strength_label = QLabel("Password strength: ")
         layout.addWidget(self.strength_label)
 
-        # Label for displaying suggestions to improve password
-        self.suggestions_label = QLabel("")
-        layout.addWidget(self.suggestions_label)
+        # Label for color-coded strength indicator
+        self.strength_indicator = QLabel("")
+        self.strength_indicator.setFixedHeight(10)
+        layout.addWidget(self.strength_indicator)
 
         # Button to generate a strong password
         self.generate_button = QPushButton("Generate Strong Password")
         self.generate_button.clicked.connect(self.generate_password)
         layout.addWidget(self.generate_button)
 
+        # Label for displaying suggestions to improve password
+        self.suggestions_label = QLabel("")
+        layout.addWidget(self.suggestions_label)
+
         self.setLayout(layout)
 
-    # Function to check the strength of the password entered
-    def check_password(self):
+    # Function to update the password strength in real time
+    def update_password_strength(self):
         user_password = self.password_input.text()
         strength, feedback = check_password_strength(user_password)
 
-        self.strength_label.setText(f"Your password is rated as: {strength}")
+        # Update the strength label
+        self.strength_label.setText(f"Password strength: {strength}")
+
+        # Update the color of the strength indicator
+        if strength == "Weak":
+            color = "red"
+        elif strength == "Moderate":
+            color = "limegreen"
+        else:  # Strong
+            color = "green"
+
+        self.strength_indicator.setStyleSheet(f"background-color: {color};")
+
+        # Update suggestions
         if feedback:
-            self.suggestions_label.setText("Suggestions to improve your password:\n" + "\n".join([f"- Add {suggestion}" for suggestion in feedback]))
+            self.suggestions_label.setText(
+                "Suggestions to improve your password:\n" + "\n".join([f"- Add {suggestion}" for suggestion in feedback])
+            )
         else:
             self.suggestions_label.setText("Great job! Your password is strong.")
+
+    # Function to toggle password visibility
+    def toggle_password_visibility(self):
+        if self.show_password_checkbox.isChecked():
+            self.password_input.setEchoMode(QLineEdit.EchoMode.Normal)
+        else:
+            self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
 
     # Function to generate a password
     def generate_password(self):
         generated_password = generate_password()
         self.password_input.setText(generated_password)
-        print(generated_password)
+
 
 # Main entry point for the application
 def main():
@@ -120,5 +152,7 @@ def main():
     window.show()
     sys.exit(app.exec())
 
+
 if __name__ == "__main__":
     main()
+
